@@ -1,0 +1,21 @@
+# Required to allow get requests, which enables a security flaw but that's how the tutorial is set up.
+OmniAuth.config.allowed_request_methods = [:post, :get]
+OmniAuth.config.silence_get_warning = true
+
+class OmniauthCallbacksController < ApplicationController
+  def twitter
+    twitter_account = Current.user.twitter_accounts.where(username: auth.info.nam).first_or_initialize
+    twitter_account.update(
+      name: auth.info.name,
+      username: auth.info.nickname,
+      image: auth.info.image,
+      token: auth.credentials.token,
+      secret: auth.credentials.secret
+    )
+    redirect_to root_path, notice: "Successfully connected your account"
+  end
+
+  def auth
+    request.env['omniauth.auth']
+  end
+end
