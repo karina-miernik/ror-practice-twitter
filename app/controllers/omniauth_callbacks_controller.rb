@@ -4,7 +4,7 @@ OmniAuth.config.silence_get_warning = true
 
 class OmniauthCallbacksController < ApplicationController
   def twitter
-    twitter_account = Current.user.twitter_accounts.where(username: auth.info.nam).first_or_initialize
+    twitter_account = Current.user.twitter_accounts.where(username: auth.info.nickname).first_or_initialize
     twitter_account.update(
       name: auth.info.name,
       username: auth.info.nickname,
